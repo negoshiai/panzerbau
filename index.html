@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planzer Bauunternehmung GmbH | Bauen mit Vertrauen. Seit 1957.</title>
+    <meta name="description" content="Planzer Bauunternehmung GmbH - Ihr Partner für Hochbau, Tiefbau und Umbauten in der Region Uri. Qualität, Termintreue und Kundenzufriedenheit seit 1957.">
+    <meta name="keywords" content="Bauunternehmung, Hochbau, Tiefbau, Umbau, Renovation, Fassaden, Gipserarbeiten, Bürglen, Uri, Schweiz">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- CSS RESET & CORE STYLING --- */
+        :root {
+            --dark-bg: #0d1117;
+            --primary-blue: #004A99;
+            --accent-orange: #FFA500;
+            --glow-orange: rgba(255, 165, 0, 0.75);
+            --text-light: #e6edf3;
+            --text-muted: #8b949e;
+            --border-color: rgba(255, 165, 0, 0.15);
+            --card-bg: #161b22;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--dark-bg);
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.7;
+            overflow-x: hidden;
+            cursor: none; /* Hide default cursor */
+        }
+        
+        /* --- CURSOR TRAIL EFFECT --- */
+        .cursor-dot, .cursor-outline {
+            pointer-events: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-orange);
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 165, 0, 0.3);
+            transition: transform 0.1s ease-out, width 0.2s, height 0.2s;
+        }
+        
+        /* Hover state for cursor */
+        body.cursor-hover .cursor-dot {
+            opacity: 0;
+        }
+        body.cursor-hover .cursor-outline {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(255, 165, 0, 0.1);
+            border: 1px solid var(--accent-orange);
+        }
+
+        /* --- GLOBAL ELEMENTS & TYPOGRAPHY --- */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--text-light);
+            line-height: 1.3;
+        }
+
+        h1 { font-size: 3.5rem; }
+        h2 { font-size: 2.5rem; margin-bottom: 2rem; }
+        h3 { font-size: 1.5rem; }
+        
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-title h2 {
+            display: inline-block;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-orange);
+            box-shadow: 0 0 10px var(--glow-orange);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--accent-orange);
+            color: var(--dark-bg);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent-orange);
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.3);
+        }
+        .btn:hover {
+            background: transparent;
+            color: var(--accent-orange);
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px var(--glow-orange);
+        }
+        
+        /* --- SCROLL REVEAL ANIMATION --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 0;
+            z-index: 1000;
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .header.scrolled {
+            padding: 15px 0;
+            background: rgba(13, 17, 23, 0.95);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        .logo span {
+            color: var(--accent-orange);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+        .nav-links li {
+            margin-left: 35px;
+        }
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-orange);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .hamburger .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            background-color: var(--text-light);
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* --- HERO SECTION --- */
+        #hero {
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-image: linear-gradient(rgba(13, 17, 23, 0.8), rgba(13, 17, 23, 0.95)), url('https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .hero-content {
+             max-width: 800px;
+        }
+        .hero-content h1 {
+            text-shadow: 0 0 20px rgba(0,0,0,0.7);
+            animation: fadeInGlow 2s ease-in-out;
+        }
+        .hero-content .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin: 1.5rem 0 2.5rem;
+            font-weight: 400;
+        }
+        
+        @keyframes fadeInGlow {
+            from { opacity: 0; text-shadow: 0 0 5px var(--glow-orange); transform: translateY(20px); }
+            to { opacity: 1; text-shadow: none; transform: translateY(0); }
+        }
+
+        /* --- ABOUT US / ÜBER UNS --- */
+        #about .container {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+        .about-content { flex: 1; }
+        .about-timeline { flex: 1; }
+
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background-color: var(--border-color);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -58px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: var(--accent-orange);
+            border: 3px solid var(--dark-bg);
+            box-shadow: 0 0 15px var(--glow-orange);
+            z-index: 1;
+        }
+        .timeline-year {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--accent-orange);
+            margin-bottom: 5px;
+        }
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .timeline-text {
+            color: var(--text-muted);
+        }
+
+        /* --- SERVICES / DIENSTLEISTUNGEN --- */
+        #services {
+            background-color: var(--card-bg);
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .service-card {
+            background-color: var(--dark-bg);
+            padding: 40px 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 10px 30px rgba(255, 165, 0, 0.1);
+        }
+        .service-icon {
+            font-size: 3rem;
+            color: var(--accent-orange);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px var(--glow-orange);
+        }
+        .service-card h3 {
+            margin-bottom: 1rem;
+        }
+        .service-card p {
+            color: var(--text-muted);
+        }
+
+        /* --- PROJECTS / PROJEKTE --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            height: 300px;
+        }
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .project-card:hover img {
+            transform: scale(1.1);
+        }
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(13, 17, 23, 0.95), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        .project-overlay h3 {
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+        .project-overlay p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transform: translateY(20px);
+            transition: transform 0.4s ease 0.1s;
+        }
+        .project-card:hover .project-overlay h3,
+        .project-card:hover .project-overlay p {
+            transform: translateY(0);
+        }
+        
+        /* --- TEAM / TEAM --- */
+        #team {
+            background-color: var(--card-bg);
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .team-member {
+            text-align: center;
+            border: 1px solid var(--border-color);
+            background-color: var(--dark-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        .team-member img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            object-position: top;
+            filter: grayscale(80%);
+            transition: filter 0.3s ease;
+        }
+        .team-member:hover img {
+            filter: grayscale(0%);
+        }
+        .team-info {
+            padding: 20px;
+        }
+        .team-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        .team-info p {
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+
+        /* --- CONTACT / KONTAKT --- */
+        .contact-wrapper {
+            display: flex;
+            gap: 3rem;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .contact-info { flex: 1; }
+        .contact-form { flex: 1.5; }
+
+        .contact-info h3 {
+            margin-bottom: 1.5rem;
+        }
+        .contact-info p {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .contact-info i {
+            color: var(--accent-orange);
+            width: 30px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--dark-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            border-radius: 5px;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 10px var(--glow-orange);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            background-color: #010409;
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+        .footer-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+        .footer-logo span {
+            color: var(--accent-orange);
+        }
+        .social-links {
+            margin-bottom: 1.5rem;
+        }
+        .social-links a {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: color 0.3s, transform 0.3s;
+        }
+        .social-links a:hover {
+            color: var(--accent-orange);
+            transform: translateY(-3px);
+        }
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 992px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2rem; }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background-color: var(--card-bg);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.4s ease-in-out;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+            }
+            .nav-links.active {
+                right: 0;
+            }
+            .nav-links li {
+                margin: 20px 0;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hamburger.active .bar:nth-child(2) { opacity: 0; }
+            .hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+            #about .container {
+                flex-direction: column;
+            }
+            .contact-wrapper {
+                flex-direction: column;
+            }
+        }
+        @media (max-width: 576px) {
+            h1 { font-size: 2.2rem; }
+            section { padding: 60px 0; }
+            .container { width: 95%; }
+            .hero-content .subtitle { font-size: 1.1rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-outline"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="#hero" class="logo">PLANZER<span>BAU</span></a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#hero" class="nav-item">Startseite</a></li>
+                    <li><a href="#about" class="nav-item">Über Uns</a></li>
+                    <li><a href="#services" class="nav-item">Dienstleistungen</a></li>
+                    <li><a href="#projects" class="nav-item">Projekte</a></li>
+                    <li><a href="#team" class="nav-item">Team</a></li>
+                    <li><a href="#contact" class="nav-item">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="container">
+                <div class="hero-content fade-in">
+                    <h1>Bauen mit Vertrauen. Seit 1957.</h1>
+                    <p class="subtitle">Ihr Partner für Hochbau, Tiefbau und Umbauten in der Region Uri.</p>
+                    <a href="#projects" class="btn">Unsere Projekte entdecken</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about">
+            <div class="container">
+                <div class="about-content fade-in">
+                    <div class="section-title" style="text-align: left; margin-bottom: 2rem;">
+                        <h2 style="padding-bottom: 10px; margin-bottom:0;">Unsere Geschichte</h2>
+                    </div>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                        Seit über 65 Jahren ist die Planzer Bauunternehmung GmbH ein Synonym für Qualität, Zuverlässigkeit und Handwerkskunst in Uri. Als familiengeführtes Unternehmen sind wir tief in der Region verwurzelt und stolz darauf, die Visionen unserer Kunden in die Realität umzusetzen.
+                    </p>
+                    <p>
+                        Unsere Werte – Qualität, Termintreue und Kundenzufriedenheit – sind das Fundament jedes einzelnen Projekts, das wir übernehmen. "Alles aus einer Hand" ist nicht nur ein Slogan, sondern unser Versprechen an Sie.
+                    </p>
+                </div>
+                <div class="about-timeline fade-in" style="transition-delay: 0.2s;">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1957</div>
+                            <div class="timeline-title">Gründung</div>
+                            <p class="timeline-text">Das Fundament der Planzer Bauunternehmung wird gelegt.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1985</div>
+                            <div class="timeline-title">Generationenwechsel</div>
+                            <p class="timeline-text">Die zweite Generation übernimmt und modernisiert den Betrieb.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2010</div>
+                            <div class="timeline-title">Expansion der Dienste</div>
+                            <p class="timeline-text">Erweiterung um spezialisierte Renovations- und Fassadenarbeiten.</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">Heute</div>
+                            <div class="timeline-title">Digitales Zeitalter</div>
+                            <p class="timeline-text">Tradition trifft Präzision – ein starker Partner für die Zukunft.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services">
+            <div class="container">
+                <div class="section-title fade-in">
+                    <h2>Alles aus einer Hand</h2>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card fade-in" style="transition-delay: 0.1s;">
+                        <i class="fas fa-building service-icon"></i>
+                        <h3>Hochbau</h3>
+                        <p>Von Einfamilienhäusern bis zu komplexen Gewerbebauten – wir errichten Werte für Generationen.</p>
+                    </div>
+                    <div class="service-card fade-in" style="transition-delay: 0.2s;">
+                        <i class="fas fa-road service-icon"></i>
+                        <h3>Tiefbau</h3>
+                        <p>Wir schaffen die notwendige Infrastruktur mit Präzision, von Aushubarbeiten bis zu Werkleitungen.</p>
+                    </div>
+                    <div class="service-card fade-in" style="transition-delay: 0.3s;">
+                        <i class="fas fa-hammer service-icon"></i>
+                        <h3>Umbau & Renovation</h3>
+                        <p>Wir modernisieren, sanieren und erweitern bestehende Bausubstanz mit Sorgfalt und Fachwissen.</p>
+                    </div>
+                    <div class="service-card fade-in" style="transition-delay: 0.4s;">
+                        <i class="fas fa-paint-roller service-icon"></i>
+                        <h3>Fassaden & Gipsen</h3>
+                        <p>Ästhetik und Schutz in Perfektion. Wir geben Ihrem Gebäude ein Gesicht und sorgen für das perfekte Finish.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects">
+            <div class="container">
+                <div class="section-title fade-in">
+                    <h2>Unsere Referenzen</h2>
+                </div>
+                <div class="projects-grid">
+                    <div class="project-card fade-in" style="transition-delay: 0.1s;">
+                        <img src="https://images.pexels.com/photos/209315/pexels-photo-209315.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Modernes Einfamilienhaus">
+                        <div class="project-overlay">
+                            <h3>Neubau EFH, Altdorf</h3>
+                            <p>Hochbau</p>
+                        </div>
+                    </div>
+                    <div class="project-card fade-in" style="transition-delay: 0.2s;">
+                        <img src="https://images.pexels.com/photos/8031911/pexels-photo-8031911.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Kernsanierung Altbauwohnung">
+                        <div class="project-overlay">
+                            <h3>Kernsanierung, Bürglen</h3>
+                            <p>Umbau & Renovation</p>
+                        </div>
+                    </div>
+                    <div class="project-card fade-in" style="transition-delay: 0.3s;">
+                        <img src="https://images.pexels.com/photos/585419/pexels-photo-585419.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Gewerbebau Aussenfassade">
+                        <div class="project-overlay">
+                            <h3>Fassadensanierung Gewerbe, Schattdorf</h3>
+                            <p>Fassaden</p>
+                        </div>
+                    </div>
+                    <div class="project-card fade-in" style="transition-delay: 0.4s;">
+                        <img src="https://images.pexels.com/photos/7218525/pexels-photo-7218525.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Tiefbauarbeiten für eine Strasse">
+                        <div class="project-overlay">
+                            <h3>Erschliessung Quartier, Erstfeld</h3>
+                            <p>Tiefbau</p>
+                        </div>
+                    </div>
+                     <div class="project-card fade-in" style="transition-delay: 0.5s;">
+                        <img src="https://images.pexels.com/photos/2219024/pexels-photo-2219024.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Bauarbeiter auf Baustelle">
+                        <div class="project-overlay">
+                            <h3>Aushubarbeiten Mehrfamilienhaus</h3>
+                            <p>Tiefbau</p>
+                        </div>
+                    </div>
+                     <div class="project-card fade-in" style="transition-delay: 0.6s;">
+                        <img src="https://images.pexels.com/photos/274937/pexels-photo-274937.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Wohnzimmer nach Umbau">
+                        <div class="project-overlay">
+                            <h3>Innenausbau Dachwohnung</h3>
+                            <p>Umbau & Gipsen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Team Section -->
+        <section id="team">
+            <div class="container">
+                <div class="section-title fade-in">
+                    <h2>Unser Team</h2>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member fade-in" style="transition-delay: 0.1s;">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop" alt="Teammitglied 1">
+                        <div class="team-info">
+                            <h3>Hans Planzer</h3>
+                            <p>Geschäftsführer</p>
+                        </div>
+                    </div>
+                    <div class="team-member fade-in" style="transition-delay: 0.2s;">
+                        <img src="https://images.unsplash.com/photo-1581093450021-4a7360e9a1e6?q=80&w=1974&auto=format&fit=crop" alt="Teammitglied 2">
+                        <div class="team-info">
+                            <h3>Maria Gisler</h3>
+                            <p>Projektleiterin Hochbau</p>
+                        </div>
+                    </div>
+                    <div class="team-member fade-in" style="transition-delay: 0.3s;">
+                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?q=80&w=2069&auto=format&fit=crop" alt="Teammitglied 3">
+                        <div class="team-info">
+                            <h3>Urs Arnold</h3>
+                            <p>Leiter Tiefbau</p>
+                        </div>
+                    </div>
+                    <div class="team-member fade-in" style="transition-delay: 0.4s;">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2069&auto=format&fit=crop" alt="Teammitglied 4">
+                        <div class="team-info">
+                            <h3>Peter Zberg</h3>
+                            <p>Bauführer Umbau</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <div class="container fade-in">
+                <div class="section-title">
+                    <h2>Kontaktieren Sie uns</h2>
+                </div>
+                <div class="contact-wrapper">
+                    <div class="contact-info">
+                        <h3>Bereit für Ihr Projekt?</h3>
+                        <p>Wir freuen uns darauf, von Ihnen zu hören. Kontaktieren Sie uns für eine unverbindliche Beratung oder eine Offerte.</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Planzer Bauunternehmung GmbH<br><span style="margin-left:30px;">Bauweg 5, 6463 Bürglen UR</span></p>
+                        <p><i class="fas fa-phone"></i> <a href="tel:+41418701234" style="color:var(--text-light);text-decoration:none;">+41 41 870 12 34</a></p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:info@planzer-bau.ch" style="color:var(--text-light);text-decoration:none;">info@planzer-bau.ch</a></p>
+                    </div>
+                    <div class="contact-form">
+                        <form action="#" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="name" placeholder="Ihr Name" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" placeholder="Ihre E-Mail" required>
+                            </div>
+                             <div class="form-group">
+                                <input type="text" name="subject" placeholder="Betreff" required>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="message" placeholder="Ihre Nachricht" required></textarea>
+                            </div>
+                            <button type="submit" class="btn">Anfrage senden</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">PLANZER<span>BAU</span></div>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            <p class="copyright">&copy; <span id="year"></span> Planzer Bauunternehmung GmbH. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // --- CURSOR TRAIL SCRIPT ---
+        const cursorDot = document.querySelector(".cursor-dot");
+        const cursorOutline = document.querySelector(".cursor-outline");
+        let lastX = 0, lastY = 0, isStuck = false, stuckX = 0, stuckY = 0;
+
+        window.addEventListener("mousemove", (e) => {
+            const { clientX, clientY } = e;
+            lastX = clientX;
+            lastY = clientY;
+            if(!isStuck){
+                cursorDot.style.left = `${clientX}px`;
+                cursorDot.style.top = `${clientY}px`;
+            }
+        });
+
+        const animateOutline = () => {
+            let dx = lastX - stuckX;
+            let dy = lastY - stuckY;
+
+            stuckX += dx / 8;
+            stuckY += dy / 8;
+            
+            cursorOutline.style.left = `${stuckX}px`;
+            cursorOutline.style.top = `${stuckY}px`;
+
+            requestAnimationFrame(animateOutline);
+        }
+        animateOutline();
+        
+        const interactiveElements = document.querySelectorAll('a, button, input, textarea, .service-card, .project-card, .team-member');
+
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseover', () => {
+                document.body.classList.add('cursor-hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+            });
+        });
+
+
+        // --- HEADER SCROLL EFFECT ---
+        const header = document.querySelector('.header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // --- MOBILE NAVIGATION ---
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // --- ACTIVE NAV LINK ON SCROLL ---
+        const sections = document.querySelectorAll('section');
+        const navLi = document.querySelectorAll('.nav-links li a');
+        window.addEventListener('scroll', ()=> {
+            let current = '';
+            sections.forEach( section => {
+                const sectionTop = section.offsetTop;
+                if(pageYOffset >= sectionTop - 150){
+                    current = section.getAttribute('id');
+                }
+            })
+            navLi.forEach( a => {
+                a.classList.remove('active');
+                if(a.getAttribute('href') == '#'+current){
+                    a.classList.add('active');
+                }
+            })
+        });
+
+
+        // --- SCROLL REVEAL ANIMATION (INTERSECTION OBSERVER) ---
+        const revealElements = document.querySelectorAll('.fade-in');
+        
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        });
+
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // --- FOOTER YEAR ---
+        document.getElementById('year').textContent = new Date().getFullYear();
+    });
+    </script>
+</body>
+</html>
